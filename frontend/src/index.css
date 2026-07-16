@@ -89,24 +89,30 @@ body {
 .float { animation: float-y 5s ease-in-out infinite; }
 
 /* ---- hero memory-flow visualization (Browser -> Context -> Memory -> Passport -> AI) ---- */
+/* Sized to always fit: phones show dots+connectors only (labels can't fit 5-across on a
+   320px screen next to the 64px rail); labels appear from tablet up. */
 .memflow {
-  --lw: 34px;
+  --lw: 14px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 0;
+  max-width: 100%;
   pointer-events: none;
 }
-@media (min-width: 640px) { .memflow { --lw: 58px; } }
+@media (min-width: 640px) { .memflow { --lw: 22px; } }
+@media (min-width: 1024px) { .memflow { --lw: 58px; } }
 
 .memflow-node {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  width: 62px;
+  width: 22px;
+  min-width: 0;
 }
-@media (min-width: 640px) { .memflow-node { width: 74px; } }
+@media (min-width: 640px) { .memflow-node { width: 58px; } }
+@media (min-width: 1024px) { .memflow-node { width: 74px; } }
 
 .memflow-dot {
   height: 9px;
@@ -118,11 +124,14 @@ body {
   animation-delay: calc(var(--i) * 0.45s);
 }
 .memflow-label {
-  font-size: 10px;
-  letter-spacing: 0.04em;
+  display: none; /* phones: dots + connectors only */
+  font-size: 9px;
+  letter-spacing: 0.02em;
   color: #6c6f78;
   white-space: nowrap;
 }
+@media (min-width: 640px) { .memflow-label { display: block; } }
+@media (min-width: 1024px) { .memflow-label { font-size: 10px; letter-spacing: 0.04em; } }
 .memflow-line {
   position: relative;
   margin-top: 4px;

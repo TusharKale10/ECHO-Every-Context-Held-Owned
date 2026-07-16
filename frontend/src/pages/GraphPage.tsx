@@ -160,7 +160,7 @@ export default function GraphPage() {
             </div>
           )}
 
-          <div className="absolute right-3 top-3 flex flex-wrap gap-2">
+          <div className="absolute right-3 top-3 hidden max-w-[60%] flex-wrap justify-end gap-2 sm:flex">
             {Object.entries(sourceMeta)
               .filter(([k]) => k !== "unknown")
               .map(([k, v]) => (

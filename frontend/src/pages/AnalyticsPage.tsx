@@ -143,7 +143,9 @@ export default function AnalyticsPage() {
               <div className="space-y-2">
                 {a.by_project.map((p) => (
                   <div key={p.name} className="flex items-center gap-3">
-                    <span className="w-40 shrink-0 truncate text-xs text-text">{p.name}</span>
+                    <span className="w-24 shrink-0 truncate text-xs text-text sm:w-40" title={p.name}>
+                      {p.name}
+                    </span>
                     <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-elevated">
                       <div className="h-full rounded-full bg-accent transition-all duration-700"
                         style={{ width: `${p.pct}%` }} />

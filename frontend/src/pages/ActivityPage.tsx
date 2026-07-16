@@ -210,15 +210,17 @@ export default function ActivityPage() {
         subtitle="Everything meaningful you've done — kept in your local memory. Click a row to pin, reveal, or forget."
       />
 
-      <Card hover={false} className="mb-4 flex items-center gap-2 p-2">
-        <Search size={16} className="ml-2 text-muted" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search your activity…"
-          className="flex-1 bg-transparent px-1 py-1.5 text-sm outline-none placeholder:text-muted"
-        />
-        <div className="flex items-center gap-1">
+      <Card hover={false} className="mb-4 flex flex-wrap items-center gap-2 p-2">
+        <div className="flex min-w-[200px] flex-1 items-center gap-2">
+          <Search size={16} className="ml-2 shrink-0 text-muted" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search your activity…"
+            className="w-full min-w-0 flex-1 bg-transparent px-1 py-1.5 text-sm outline-none placeholder:text-muted"
+          />
+        </div>
+        <div className="flex flex-wrap items-center gap-1">
           {RANGES.map((r) => (
             <button key={r.key} onClick={() => setRange(r.key)}
               className={cn("rounded-md px-2 py-1 text-xs", range === r.key ? "bg-accent/15 text-accent" : "text-muted hover:text-text")}>
