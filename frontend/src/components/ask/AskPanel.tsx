@@ -66,14 +66,16 @@ export function AskPanel({ compact = false }: { compact?: boolean }) {
 
       <div className={compact ? "max-h-72 overflow-y-auto px-4 py-3" : "max-h-[26rem] overflow-y-auto px-4 py-3"}>
         {turns.length === 0 ? (
-          <div className="space-y-2 py-2">
-            <p className="text-sm text-muted">Ask about your own computer activity:</p>
+          <div className="space-y-2.5 py-2">
+            <p className="text-xs font-medium uppercase tracking-[0.1em] text-muted">
+              Try asking
+            </p>
             <div className="flex flex-wrap gap-2">
               {suggestions.map((s) => (
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="rounded-full border border-border px-3 py-1 text-xs text-muted hover:border-accent hover:text-text"
+                  className="press rounded-full border border-border bg-panel px-3 py-1.5 text-xs text-muted shadow-[0_1px_2px_rgba(27,30,38,0.04)] transition-all duration-200 hover:-translate-y-px hover:border-accent/50 hover:bg-accent/5 hover:text-accent hover:shadow-[0_3px_8px_rgba(47,91,255,0.10)]"
                 >
                   {s}
                 </button>
@@ -115,21 +117,25 @@ export function AskPanel({ compact = false }: { compact?: boolean }) {
         )}
       </div>
 
-      <div className="flex items-center gap-2 border-t border-border p-2">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && send(input)}
-          placeholder="Ask your computer memory…"
-          className="flex-1 bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted"
-        />
-        <button
-          onClick={() => send(input)}
-          disabled={loading || !input.trim()}
-          className="grid h-9 w-9 place-items-center rounded-lg bg-accent text-white disabled:opacity-40"
-        >
-          {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-        </button>
+      <div className="border-t border-border p-2">
+        <div className="flex items-center gap-2 rounded-xl border border-border bg-elevated/60 p-1 transition-colors focus-within:border-accent/50 focus-within:bg-panel focus-within:ring-2 focus-within:ring-accent/15">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && send(input)}
+            placeholder="Ask your computer memory…"
+            aria-label="Ask ECHO"
+            className="flex-1 bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted"
+          />
+          <button
+            onClick={() => send(input)}
+            disabled={loading || !input.trim()}
+            aria-label="Send question"
+            className="press grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-white shadow-[0_2px_6px_rgba(47,91,255,0.28)] transition-all duration-200 hover:bg-accent-soft disabled:pointer-events-none disabled:opacity-40 disabled:shadow-none"
+          >
+            {loading ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
+          </button>
+        </div>
       </div>
     </Card>
   );

@@ -67,24 +67,31 @@ export function LiveActivity() {
         </span>
       </div>
       {signals.length === 0 ? (
-        <p className="py-4 text-center text-xs text-muted">
+        <p className="py-6 text-center text-xs text-muted">
           Create a file or folder anywhere in a watched location — it appears here instantly.
         </p>
       ) : (
-        <div className="space-y-2">
+        <ul className="grid grid-cols-1 gap-x-6 gap-y-0.5 lg:grid-cols-2">
           {signals.slice(0, 12).map((sig, i) => {
             const Icon = iconFor(sig.action, sig.kind);
             return (
-              <div key={sig.at + "-" + i} className="fade-up flex items-start gap-2.5">
-                <div className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md bg-elevated text-accent">
-                  <Icon size={13} />
-                </div>
-                <span className="flex-1 text-sm text-text">{sig.text}</span>
-                <span className="shrink-0 text-[11px] text-muted">{ago(sig.at)}</span>
-              </div>
+              <li
+                key={sig.at + "-" + i}
+                className="fade-up group/a flex items-center gap-2.5 rounded-lg px-1.5 py-1.5 transition-colors hover:bg-elevated/70"
+              >
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-elevated text-accent transition-colors group-hover/a:bg-accent/10">
+                  <Icon size={12} />
+                </span>
+                <span className="min-w-0 flex-1 truncate text-[13px] text-text" title={sig.text}>
+                  {sig.text}
+                </span>
+                <time className="shrink-0 whitespace-nowrap font-mono text-[10.5px] text-muted">
+                  {ago(sig.at)}
+                </time>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </Card>
   );

@@ -20,13 +20,13 @@ export function ContextFlow() {
         <div className="flex flex-col items-stretch gap-2 lg:flex-row lg:items-stretch">
           {STAGES.map((s, i) => (
             <div key={s.title} className="contents lg:flex lg:flex-1 lg:items-center">
-              <div className="flex flex-1 items-center gap-3 rounded-xl px-2 py-2 lg:flex-col lg:text-center">
-                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/12 text-accent">
-                  <s.icon size={20} />
+              <div className="group/st flex flex-1 items-center gap-3 rounded-xl px-2 py-3 transition-colors hover:bg-elevated/50 lg:flex-col lg:text-center">
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/15 transition-all duration-200 group-hover/st:scale-105 group-hover/st:bg-accent/15">
+                  <s.icon size={19} strokeWidth={1.75} />
                 </div>
-                <div className="lg:mt-2">
-                  <div className="text-sm font-semibold text-text">{s.title}</div>
-                  <div className="text-[11px] leading-snug text-muted">{s.copy}</div>
+                <div className="lg:mt-2.5">
+                  <div className="text-[13px] font-semibold text-text">{s.title}</div>
+                  <div className="mt-0.5 text-[11px] leading-snug text-muted">{s.copy}</div>
                 </div>
               </div>
               {i < STAGES.length - 1 && (

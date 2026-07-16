@@ -33,25 +33,45 @@ const FAQS = [
 function Item({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <Card hover={false} className="overflow-hidden">
+    <Card
+      hover={false}
+      className={cn(
+        "overflow-hidden transition-colors duration-200",
+        open ? "border-accent/35" : "hover:border-accent/25"
+      )}
+    >
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-3 px-5 py-4 text-left"
+        aria-expanded={open}
+        className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-elevated/50"
       >
-        <span className="flex-1 text-sm font-medium text-text">{q}</span>
-        <ChevronDown
-          size={17}
-          className={cn("shrink-0 text-muted transition-transform duration-300", open && "rotate-180 text-accent")}
-        />
+        <span
+          className={cn(
+            "flex-1 text-[14px] font-medium transition-colors",
+            open ? "text-accent" : "text-text"
+          )}
+        >
+          {q}
+        </span>
+        <span
+          className={cn(
+            "grid h-6 w-6 shrink-0 place-items-center rounded-full transition-all duration-300",
+            open ? "rotate-180 bg-accent/10 text-accent" : "text-muted"
+          )}
+        >
+          <ChevronDown size={15} />
+        </span>
       </button>
       <div
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 ease-out",
-          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          "grid transition-[grid-template-rows,opacity] duration-300 ease-out",
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         )}
       >
         <div className="overflow-hidden">
-          <p className="px-5 pb-4 text-sm leading-relaxed text-muted">{a}</p>
+          <p className="border-t border-border/60 px-5 py-4 text-[13.5px] leading-relaxed text-muted">
+            {a}
+          </p>
         </div>
       </div>
     </Card>

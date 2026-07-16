@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReactNode, HTMLAttributes, ButtonHTMLAttributes } from "react";
 
@@ -47,25 +48,37 @@ export function Badge({
 export function Button({
   className,
   variant = "default",
+  loading = false,
+  children,
+  disabled,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "ghost" | "outline";
+  loading?: boolean;
 }) {
   const variants = {
     default:
-      "bg-accent text-white shadow-[0_2px_8px_rgba(47,91,255,0.25)] hover:bg-accent-soft hover:shadow-[0_4px_14px_rgba(47,91,255,0.32)]",
+      "bg-accent text-white shadow-[0_2px_8px_rgba(47,91,255,0.24)] hover:bg-accent-soft hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(47,91,255,0.3)]",
     ghost: "text-muted hover:text-text hover:bg-elevated",
-    outline: "border border-border text-text hover:border-accent/40 hover:bg-elevated",
+    outline:
+      "border border-border bg-panel/60 text-text hover:-translate-y-px hover:border-accent/40 hover:bg-elevated hover:shadow-[0_4px_12px_rgba(27,30,38,0.06)]",
   };
   return (
     <button
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
       className={cn(
-        "press inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 disabled:opacity-50",
+        "press inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200",
+        "disabled:pointer-events-none disabled:opacity-50",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         variants[variant],
         className
       )}
       {...props}
-    />
+    >
+      {loading && <Loader2 size={14} className="animate-spin" />}
+      {children}
+    </button>
   );
 }
 

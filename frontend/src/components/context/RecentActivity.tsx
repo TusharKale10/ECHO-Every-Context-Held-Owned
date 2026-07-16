@@ -60,22 +60,34 @@ export function RecentActivity() {
         </span>
       </div>
       {merged.length === 0 ? (
-        <p className="py-4 text-center text-sm text-muted">No activity yet.</p>
+        <p className="py-6 text-center text-sm text-muted">No activity yet.</p>
       ) : (
-        <div className="space-y-2">
+        <ul className="relative space-y-0.5 before:absolute before:bottom-2 before:left-[4px] before:top-2 before:w-px before:bg-border">
           {merged.slice(0, 12).map((it) => {
             const meta = sourceMeta[it.source_type] ?? sourceMeta.unknown;
+            const when = it.created_at
+              ? timeAgo(it.created_at)
+              : it.at
+                ? timeAgo(new Date(it.at).toISOString())
+                : "";
             return (
-              <div key={it.id} className="flex items-start gap-2.5">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: meta.color }} />
-                <span className="flex-1 text-sm text-text">{it.preview}</span>
-                <span className="shrink-0 text-[11px] text-muted">
-                  {it.created_at ? timeAgo(it.created_at) : it.at ? timeAgo(new Date(it.at).toISOString()) : ""}
-                </span>
-              </div>
+              <li
+                key={it.id}
+                className="group/i relative flex items-start gap-3 rounded-lg py-1.5 pl-5 pr-1.5 transition-colors hover:bg-elevated/70"
+              >
+                <span
+                  className="absolute left-0 top-[11px] h-[9px] w-[9px] shrink-0 rounded-full ring-2 ring-panel transition-transform duration-200 group-hover/i:scale-125"
+                  style={{ backgroundColor: meta.color }}
+                  title={meta.label}
+                />
+                <span className="flex-1 text-[13px] leading-snug text-text">{it.preview}</span>
+                <time className="shrink-0 whitespace-nowrap font-mono text-[10.5px] text-muted">
+                  {when}
+                </time>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </Card>
   );

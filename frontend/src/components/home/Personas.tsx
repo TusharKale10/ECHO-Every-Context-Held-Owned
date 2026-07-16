@@ -1,5 +1,6 @@
 import { Briefcase, Code2, GraduationCap, PenTool, Microscope } from "lucide-react";
 import { Card } from "@/components/ui";
+import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 
 const PEOPLE = [
   {
@@ -40,20 +41,22 @@ export function Personas() {
       <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted">
         Built for everyone whose context matters
       </p>
-      <div className="stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <RevealGroup className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {PEOPLE.map((p) => (
-          <Card key={p.title} className="p-5 text-center">
-            <div
-              className="mx-auto mb-3 grid h-11 w-11 place-items-center rounded-full"
-              style={{ backgroundColor: `${p.tint}18`, color: p.tint }}
-            >
-              <p.icon size={20} />
-            </div>
-            <div className="font-display text-sm font-semibold">{p.title}</div>
-            <p className="mt-1.5 text-[12px] leading-snug text-muted">{p.copy}</p>
-          </Card>
+          <RevealItem key={p.title}>
+            <Card className="h-full p-5 text-center">
+              <div
+                className="mx-auto mb-3 grid h-11 w-11 place-items-center rounded-full"
+                style={{ backgroundColor: `${p.tint}18`, color: p.tint }}
+              >
+                <p.icon size={20} />
+              </div>
+              <div className="font-display text-sm font-semibold">{p.title}</div>
+              <p className="mt-1.5 text-[12px] leading-snug text-muted">{p.copy}</p>
+            </Card>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   );
 }

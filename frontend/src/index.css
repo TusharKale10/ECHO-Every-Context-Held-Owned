@@ -88,6 +88,76 @@ body {
 }
 .float { animation: float-y 5s ease-in-out infinite; }
 
+/* ---- hero memory-flow visualization (Browser -> Context -> Memory -> Passport -> AI) ---- */
+.memflow {
+  --lw: 34px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  pointer-events: none;
+}
+@media (min-width: 640px) { .memflow { --lw: 58px; } }
+
+.memflow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 62px;
+}
+@media (min-width: 640px) { .memflow-node { width: 74px; } }
+
+.memflow-dot {
+  height: 9px;
+  width: 9px;
+  border-radius: 9999px;
+  background: #2f5bff;
+  opacity: 0.28;
+  animation: memflow-pulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.45s);
+}
+.memflow-label {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #6c6f78;
+  white-space: nowrap;
+}
+.memflow-line {
+  position: relative;
+  margin-top: 4px;
+  height: 1px;
+  width: var(--lw);
+  flex: none;
+  background: rgba(27, 30, 38, 0.14);
+}
+.memflow-glow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 5px;
+  width: 5px;
+  margin-top: -2.5px;
+  margin-left: -2.5px;
+  border-radius: 9999px;
+  background: #2f5bff;
+  box-shadow: 0 0 8px 1px rgba(47, 91, 255, 0.55);
+  opacity: 0;
+  animation: memflow-travel 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.45s);
+  will-change: transform, opacity;
+}
+@keyframes memflow-travel {
+  0% { transform: translateX(0) scale(0.7); opacity: 0; }
+  12% { opacity: 1; }
+  60% { transform: translateX(var(--lw)) scale(1); opacity: 1; }
+  75%, 100% { transform: translateX(var(--lw)) scale(0.7); opacity: 0; }
+}
+@keyframes memflow-pulse {
+  0%, 100% { opacity: 0.28; transform: scale(1); }
+  55% { opacity: 1; transform: scale(1.25); }
+}
+
 /* ---- ECHO ripple identity ---- */
 /* logo micro-interaction: a soft outward ring on hover / on real event (data-pulse) */
 .echo-logo-ring {
@@ -165,4 +235,7 @@ body {
   .card-hover:hover, .lift-sm:hover, .press:active { transform: none !important; }
   /* keep the ECHO logo, disable travelling ripples + pulses */
   .echo-wave, .echo-logo-ring { animation: none !important; opacity: 0 !important; }
+  /* memory flow stays legible, just static */
+  .memflow-glow { animation: none !important; opacity: 0 !important; }
+  .memflow-dot { animation: none !important; opacity: 0.5 !important; }
 }

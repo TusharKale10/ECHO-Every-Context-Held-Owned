@@ -28,27 +28,31 @@ function Field({
 }) {
   if (!value) return null;
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-elevated text-muted">
+    <div className="group/f flex items-center gap-3 rounded-lg p-1.5 transition-colors hover:bg-elevated/70">
+      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-elevated text-muted transition-colors group-hover/f:bg-accent/10 group-hover/f:text-accent">
         <Icon size={15} />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] uppercase tracking-wider text-muted">{label}</span>
+          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-muted">
+            {label}
+          </span>
           {detection && (
             <span
               className={cn(
-                "rounded px-1 text-[9px] font-semibold uppercase tracking-wide",
+                "rounded-full px-1.5 py-px text-[8.5px] font-semibold uppercase tracking-wide",
                 detection === "detected"
-                  ? "bg-success/15 text-success"
-                  : "bg-warn/15 text-warn"
+                  ? "bg-success/12 text-success ring-1 ring-inset ring-success/20"
+                  : "bg-warn/12 text-warn ring-1 ring-inset ring-warn/20"
               )}
             >
               {detection}
             </span>
           )}
         </div>
-        <div className="truncate font-mono text-[13px] text-text">{value}</div>
+        <div className="truncate font-mono text-[13px] font-medium text-text" title={value}>
+          {value}
+        </div>
       </div>
     </div>
   );
@@ -63,22 +67,24 @@ export function CurrentContext({
 }) {
   return (
     <Card className="p-5">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-sm font-semibold uppercase tracking-wider text-muted">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
+        <h2 className="font-display text-[13px] font-semibold uppercase tracking-[0.14em] text-muted">
           Current Context
         </h2>
-        <span className="flex items-center gap-1.5 text-xs text-muted">
+        <span className="flex items-center gap-2 text-xs">
           {detectedAt && (
-            <span className="font-mono text-[11px]">
+            <span className="font-mono text-[11px] text-muted">
               detected {timeAgo(new Date(detectedAt).toISOString())}
             </span>
           )}
-          <span className="h-2 w-2 rounded-full bg-accent pulse-dot" /> observing
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success ring-1 ring-inset ring-success/20">
+            <span className="h-1.5 w-1.5 rounded-full bg-success pulse-dot" /> observing
+          </span>
         </span>
       </div>
 
       {ctx ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
           <Field icon={AppWindow} label="Application" value={ctx.application} detection={detectionOf(ctx, "application")} />
           <Field icon={FolderGit2} label="Project" value={ctx.project_name} detection={detectionOf(ctx, "project_name")} />
           <Field icon={FileCode2} label="File" value={ctx.file_path} detection={detectionOf(ctx, "file_path")} />
