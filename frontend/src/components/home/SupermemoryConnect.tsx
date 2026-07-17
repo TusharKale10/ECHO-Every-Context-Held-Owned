@@ -45,33 +45,51 @@ const CODE: Record<string, Tok[][]> = {
 const TABS = Object.keys(CODE);
 
 /**
- * Shown ONLY when Supermemory Local is offline — prompts the user to connect the local
- * memory engine ECHO depends on. Hides itself when reachable (the sidebar dot conveys it).
+ * Always-visible "run it yourself" panel. Adapts its message to the connection state:
+ *  - backend unreachable -> "Waking up ECHO"
+ *  - Supermemory offline  -> "Connect ECHO to Supermemory"
+ *  - connected (hosted)   -> "Run ECHO on your own machine" (self-host CTA + quickstart)
+ * So visitors of the hosted demo always see how to set up Supermemory locally.
  */
 export function SupermemoryConnect() {
   const status = useContextStore((s) => s.status);
   const backendUp = useContextStore((s) => s.backendUp);
   const [tab, setTab] = useState("TypeScript");
 
-  // Two "not fully connected" cases worth guiding the user through:
-  const backendDown = backendUp === false;                       // can't reach the ECHO backend
+  // Three states — the panel ALWAYS shows so visitors of the hosted demo learn how to run
+  // ECHO themselves (with their own local Supermemory).
+  const backendDown = backendUp === false; // can't reach the ECHO backend
   const memoryOffline = !!status && status.supermemory.reachable === false; // backend up, memory down
-  if (!backendDown && !memoryOffline) return null;
+  const warn = backendDown || memoryOffline;
 
   const lines = CODE[tab];
+
+  const badgeText = backendDown
+    ? "ECHO backend · not reachable"
+    : memoryOffline
+      ? "Supermemory · offline"
+      : "Self-host · run it yourself";
+  const heading = backendDown
+    ? "Waking up ECHO"
+    : memoryOffline
+      ? "Connect ECHO to Supermemory"
+      : "Run ECHO on your own machine";
 
   return (
     <Card hover={false} className="mt-6 overflow-hidden">
       <div className="grid gap-0 lg:grid-cols-2">
         {/* ---------- left: connect copy + code editor ---------- */}
         <div className="border-b border-border p-6 lg:border-b-0 lg:border-r">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-warn/10 px-3 py-1 text-xs font-medium text-warn ring-1 ring-inset ring-warn/20">
-            <span className="h-2 w-2 rounded-full bg-warn" />
-            {backendDown ? "ECHO backend · not reachable" : "Supermemory · offline"}
+          <div
+            className={cn(
+              "mb-2 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset",
+              warn ? "bg-warn/10 text-warn ring-warn/20" : "bg-accent/10 text-accent ring-accent/20"
+            )}
+          >
+            <span className={cn("h-2 w-2 rounded-full", warn ? "bg-warn" : "bg-accent")} />
+            {badgeText}
           </div>
-          <h3 className="font-display text-xl font-bold tracking-tight">
-            {backendDown ? "Waking up ECHO" : "Connect ECHO to Supermemory"}
-          </h3>
+          <h3 className="font-display text-xl font-bold tracking-tight">{heading}</h3>
           <p className="mt-1.5 max-w-md text-sm leading-relaxed text-muted">
             {backendDown ? (
               <>
@@ -79,12 +97,19 @@ export function SupermemoryConnect() {
                 waking up — it retries automatically, give it ~30s. Running it yourself? Start the
                 local backend and it connects.
               </>
-            ) : (
+            ) : memoryOffline ? (
               <>
                 ECHO remembers your work through <span className="text-text">Supermemory</span> — a
                 memory engine (local at <span className="font-mono text-text">localhost:6767</span>,
                 or Supermemory Cloud). It isn't connected yet. Start it and ECHO connects
                 automatically.
+              </>
+            ) : (
+              <>
+                You're on the hosted demo. To run ECHO on <span className="text-text">your own
+                computer</span> — with automatic activity capture and everything private on your
+                device — set up <span className="text-text">Supermemory Local</span> and start ECHO.
+                Here's how:
               </>
             )}
           </p>
