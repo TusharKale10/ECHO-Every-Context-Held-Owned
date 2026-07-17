@@ -15,6 +15,7 @@ import { ContextFlow } from "@/components/home/ContextFlow";
 import { Personas } from "@/components/home/Personas";
 import { Faq } from "@/components/home/Faq";
 import { EchoDemo } from "@/components/home/EchoDemo";
+import { SupermemoryConnect } from "@/components/home/SupermemoryConnect";
 import { FeatureSection } from "@/components/home/FeatureSection";
 import { SectionHeader } from "@/components/home/SectionHeader";
 import { Reveal } from "@/components/motion/Reveal";
@@ -29,6 +30,7 @@ export default function ContextPage() {
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-8 sm:py-8">
       <Reveal y={14} className="mb-5">
         <Hero />
+        <SupermemoryConnect />
       </Reveal>
 
       <Reveal>
