@@ -231,15 +231,29 @@ No database. **No second vector store.** Supermemory *is* the persistence layer;
 ## 🚀 Setup
 
 ### Prerequisites
-- **Supermemory Local** running at `http://localhost:6767`
-- **Python 3.11+** · **Node 18+**
+- **Git** · **Python 3.11+** · **Node 18+**
+- **Supermemory** — run it locally *or* use Supermemory Cloud (step 1).
 
-### 1. Start Supermemory Local
+### 0. Clone this repo
 ```bash
-# wherever you installed it (this example runs it under WSL)
-cd ~/supermemory-local && ~/.local/bin/supermemory-server
+git clone https://github.com/TusharKale10/ECHO-Every-Context-Held-Owned.git
+cd ECHO-Every-Context-Held-Owned
 ```
-> Keep this process running. Verify: `curl http://localhost:6767/v3/health` → `{"status":"ok"}`
+
+### 1. Get Supermemory running (the memory engine ECHO needs)
+**Option A — Supermemory Local** *(recommended, fully private).* If you don't have it yet,
+install & start it from the official quickstart →
+[supermemory.ai/docs/self-hosting/quickstart](https://supermemory.ai/docs/self-hosting/quickstart).
+It should serve `http://localhost:6767`.
+Verify: `curl http://localhost:6767/v3/health` → `{"status":"ok"}`.
+
+**Option B — Supermemory Cloud** *(no local install).* Create an API key at
+[supermemory.ai](https://supermemory.ai), then in `backend/.env` (step 2) set
+`SUPERMEMORY_BASE_URL=https://api.supermemory.ai` and `SUPERMEMORY_API_KEY=sm_...`.
+
+> Not installed yet? ECHO also shows an in-app **"Connect to Supermemory"** guide on the home
+> screen when it can't reach Supermemory, and the sidebar dot is **red** (offline) / **green**
+> (connected).
 
 ### 2. Backend
 ```bash
@@ -276,7 +290,8 @@ Details: [`mcp-server/README.md`](mcp-server/README.md)
 ### Configuration (`backend/.env`)
 | Variable | Default | Purpose |
 |---|---|---|
-| `SUPERMEMORY_BASE_URL` | `http://localhost:6767` | Supermemory Local |
+| `SUPERMEMORY_BASE_URL` | `http://localhost:6767` | Supermemory Local, or `https://api.supermemory.ai` for cloud |
+| `SUPERMEMORY_API_KEY` | *(blank)* | required only for Supermemory Cloud |
 | `CONTEXTOS_USER_ID` | auto-generated | container tag identity |
 | `CONTEXTOS_WATCH_DIR` | cwd | project tracked for git/branch |
 | `CONTEXTOS_ACTIVITY_ROOTS` | Desktop/Documents/Downloads/project | folders to watch |
@@ -317,17 +332,6 @@ ECHO/
 ```
 
 All Supermemory access is funnelled through **one** service — no scattered HTTP calls.
-
----
-
-## ⚠️ Honest limitations
-
-- **Windows-first.** Active-window capture uses pywin32; the filesystem watcher and git work anywhere, and source interfaces are platform-extensible.
-- **Local-first by design — it cannot be "deployed live" to the cloud.** The backend reads *your* windows and files, and Supermemory holds *your* on-device memory. A cloud instance would have no context to capture. The UI can be hosted; the intelligence must run on your machine. **That's the point.**
-- **Ask ECHO is grounded retrieval, not an LLM narrator.** Answers are composed from your real memories (so it can't hallucinate); phrasing is templated rather than conversational prose.
-- **Cross-folder moves** performed as copy+delete register as two events rather than one "moved".
-- **Accessibility/OCR capture and Evidence Frames** are architected (privacy redaction is in place) but **not implemented** — they need extra native deps and screen permissions.
-- Browser context requires the extension to be loaded.
 
 ---
 
